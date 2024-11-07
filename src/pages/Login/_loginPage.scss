@@ -1,0 +1,98 @@
+@import'../../base';
+
+.login{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+
+
+  
+  background-color: $button-background;
+  &_container{
+    width: 70%;
+    height:50vh;
+    box-sizing: border-box;
+    background-color: $black-primary;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    img {
+        width: 45px;
+        margin-bottom: 50px;
+      }
+  }
+
+  &_form{
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  &_title{
+    width: 50%;
+    height: 100%;
+  }
+  
+.form_container{
+  padding-top: 5px;
+  display: flex ;
+  flex-grow: 0.5;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 50%;
+
+  .form_control{
+  padding:10px 10px;
+  margin-bottom: 20px;
+  width: 90%;
+  background-color: $button-background;
+  color:$text-color;
+  &::placeholder{
+    color: $text-color;
+  }
+  
+  }
+.button_container{
+width: 75%;
+height: 30%;
+display: flex;
+gap:10px;
+margin: auto;
+justify-content: end;
+
+button{
+bottom:30px;
+height: 40px;
+z-index: 9999;
+background-color: #A7C7E7;
+border:none;
+border-radius: 20px;
+color: #062e6f;
+}
+
+.signup_button{
+  background-color: transparent;
+  color: $text-color;
+}
+  }
+}
+}
+
+@media (max-width:$breakpoint-extra-small) {
+  .login{
+    min-width: 550px;
+    
+    &_form {
+        flex-direction: column;
+        align-items: center;
+      }
+  }
+  
+} 
+  

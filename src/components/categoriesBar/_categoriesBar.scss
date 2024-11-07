@@ -1,0 +1,23 @@
+@import "../../base";
+
+.categories_bar{
+padding:0.5rem 0;
+font-size: 0.8rem;;
+
+display: flex;
+overflow-x:scroll;
+
+&::-webkit-scrollbar{
+  width:0px;
+}
+
+span{
+  margin-right: 1rem;
+  padding:0.5rem;
+
+  white-space: nowrap;
+  border-radius: 6px;
+  background-color: $button-background;
+  color: $text-color;
+}
+}
