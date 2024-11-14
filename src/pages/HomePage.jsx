@@ -3,43 +3,9 @@ import CategoriesBar from '../components/categoriesBar/CategoriesBar'
 import Video from '../components/video/Video'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPopularVideos } from '../redux/videoSlice'
-import { useEffect } from 'react'
-
-// export default function HomePage() {
-//   const dispatch = useDispatch();
-//   const videos = useSelector((state) => state.videos.videos);
-//   const error = useSelector((state) => state.videos.error);
-//   const loading = useSelector((state) => state.videos.loading);
-  
-//    useEffect(() => {
-//     console.log('Dispatching getPopularVideos');
-//     dispatch(getPopularVideos())
-//       .unwrap()
-//       .then(data => console.log('Videos loaded:', data))
-//       .catch(error => console.error('Error loading videos:', error));
-//   }, [dispatch]);
-
-//   console.log('Current state:', { videos, error, loading });
-
-//   if (loading) return <div>Loading...</div>;
-//   if (error) return <div>Error: {error}</div>;
-//   if (!videos?.length) return <div>No videos found</div>;
-
-//   return (
-//     <Container>
-//       <CategoriesBar />
-//       <Row>
-//         {
-//           videos?.map((video,index) => (
-//             <Col key={index} lg={3} md={4} xs={6}>
-//             <Video video={video}/>
-//             </Col>
-//           ))
-//         }
-//       </Row>
-//     </Container>
-//   )
-// }
+import {  useEffect } from 'react'
+// import { AuthContext } from '../components/AuthProvider'
+// import { useNavigate } from 'react-router-dom'
 
 
 export default function HomePage() {
@@ -47,9 +13,10 @@ export default function HomePage() {
   const videos = useSelector((state) => state.videos.videos);
   const error = useSelector((state) => state.videos.error);
   const loading = useSelector((state) => state.videos.loading);
-  
+  // const currentUser = useContext(AuthContext)
+ 
   useEffect(() => {
-    dispatch(getPopularVideos());
+      dispatch(getPopularVideos());
   }, [dispatch]);
 
   console.log('Videos state:', videos);
@@ -62,9 +29,9 @@ export default function HomePage() {
     <Container>
       <CategoriesBar />
       <Row>
-        {videos.map((video, index) => (
+        {!loading &&videos.map((video, index) => (
           <Col key={video.id || index} lg={3} md={4} xs={6}>
-            <Video video={video} />
+            <Video video={video}  />
           </Col>
         ))}
       </Row>

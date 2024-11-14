@@ -3,14 +3,19 @@ import { auth } from "../firebase";
 
 export const AuthContext  =createContext()
 
-export default function AuthProvider({ children }) {
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
   
   useEffect(() => {
-    return   auth.onAuthStateChanged((user) => {
-      setCurrentUser(user)
-      setLoading(false)
+    return auth.onAuthStateChanged((user) => {
+      try {
+        setCurrentUser(user)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
   })
   }, [])
   

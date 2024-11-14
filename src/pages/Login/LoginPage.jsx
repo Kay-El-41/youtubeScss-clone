@@ -1,14 +1,14 @@
 
-import {  useState } from 'react'
+import {  useContext, useEffect, useState } from 'react'
 import { Button, Form, FormGroup } from 'react-bootstrap'
 import './_loginPage.scss'
 // import { useDispatch, useSelector } from 'react-redux'
 // import { login, signUp } from '../../redux/login/authSlice'
 import { auth } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
-// import { AuthContext } from '../../components/AuthProvider'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { authenticateYouTube } from '../../components/googleAuth/googleAuthUtils'
+import { AuthContext } from '../../components/AuthProvider'
 
 
 export default function LoginPage() {
@@ -17,16 +17,31 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   // const [loading,setLoading]=useState(false)
   const navigate = useNavigate()
-  // const{currentUser}=useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext)
+  console.log(currentUser)
   
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     console.log(currentUser)
-  //     navigate('/')
-  //   } else {
-  //     navigate('/login')
-  //   }
-  // }, [currentUser, navigate])
+  useEffect(() => {
+    try {
+
+      if (currentUser) {
+      
+         /*
+        The replace option comes from React Router's navigation API.
+        When you use navigate() from useNavigate() hook, you can pass
+        an options object as the second parameter. The replace: true
+        option tells the router to replace the current entry in the
+        history stack instead of adding a new one.
+        */
+        navigate('/', { replace: true })
+      }
+      else {
+       navigate('/login')
+      }
+    } catch (error) {
+      console.log(error)
+    } 
+    
+  }, [currentUser, navigate])
   
   const toggleSignUp = () => {
     setFormTitle('SignUp')
@@ -42,7 +57,6 @@ export default function LoginPage() {
         password
       )
       await authenticateYouTube(true)
-      navigate('/')
       
     }catch(error){
       console.log('Sign-up error',error)
@@ -61,9 +75,8 @@ export default function LoginPage() {
       )
 
       await authenticateYouTube(true)
-      navigate('/')
-      } catch (youtubeError) {
-      console.log('Silent Youtube auth failed',youtubeError)
+      } catch (error) {
+      console.log(error)
     }
     }
   return (

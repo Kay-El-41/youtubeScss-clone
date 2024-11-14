@@ -6,12 +6,11 @@ import"./_app.scss"
 import LoginPage from "./pages/Login/LoginPage";
 import { BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import { useState } from "react";
-import AuthProvider from "./components/AuthProvider";
+import {AuthProvider} from "./components/AuthProvider";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
 export  function Layout() {
-  
   const [sidebar, toggleSidebar] = useState(false)
   
   const handleToggleSidebar = () => toggleSidebar((value)=>!value)
@@ -39,7 +38,7 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<HomePage/>} />
           {/* <Route path="/search" element={}/> */}
         </Route>
         <Route path="*" element={<LoginPage/>} />

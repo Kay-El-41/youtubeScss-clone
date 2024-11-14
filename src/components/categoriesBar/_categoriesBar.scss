@@ -19,5 +19,15 @@ span{
   border-radius: 6px;
   background-color: $button-background;
   color: $text-color;
+  cursor: pointer;    
+
+  &:hover{
+    background-color: #374a59;
+  }
+
+  &.active{
+    color:#fff;
+    background-color: #606060;
+  }
 }
 }
