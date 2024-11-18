@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import request from '../api'
 export const getPopularVideos = createAsyncThunk(
   "videos/getPopularVideos",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue,getState }) => {
     try {
       const res = await request.get('/videos', {
         params: { 
@@ -10,12 +10,16 @@ export const getPopularVideos = createAsyncThunk(
           part: "snippet,contentDetails,statistics",
           chart: "mostPopular",
           regionCode: "MY",
-          maxResults: 100,  // limit to 50 items  per request
-          pageToken: ''
+          maxResults: 20,  // limit to 50 items  per request
+          pageToken: getState().videos.nextPageToken
         }
       });
       console.log(res)
-      return res;
+      return {
+        videos: res.data.items,
+        nextPageToken: res.data.nextPageToken,
+        category:'All'
+      }
     } catch (error) {
       if (error.response?.status === 403) {
         // Redirect to login or refresh token
@@ -57,6 +61,10 @@ export const getVideosByCategory = createAsyncThunk(
       get nextPageToken state from videos slice using getState() function
       */
       const { nextPageToken } = getState().videos
+      
+      /*Endpoint: /search is used to search for
+       YouTube videos.
+      */  
       const res = await request('/search', {
         params: {
           part: 'snippet',
@@ -71,19 +79,25 @@ export const getVideosByCategory = createAsyncThunk(
         }
       })
       console.log(res)
-      // Get video IDs from search results
+      // loop through items array in data get the video id of each item
       const videoIds = res.data.items.map(item => item.id.videoId).join(',');
 
       // Get full video details
+      /*
+      data: Original property name in the object.
+      videoData: The new variable name you want to use.
+      */
       const { data: videoData } = await request('/videos', {
         params: {
           part: 'snippet,contentDetails,statistics',
-          id: videoIds,
-        },
+          id: videoIds,//retrive specific video based on videoIds
+        }
       });
+      console.log(videoData)
 
+      
       return {
-        videos: videoData.items,
+        videos: videoData,
         nextPageToken: res.data.nextPageToken,
         category: keyword,
       };
@@ -109,19 +123,35 @@ const videoSlice = createSlice({
     */
     channelIcons: {},//store icons for each channel by id
     loading: true,
-    error: null,
     nextPageToken: null,
-    category:''
+    activeCategory:'All'
   },
   
   extraReducers: (builder) => {
     builder
       .addCase(getPopularVideos.fulfilled, (state, action) => {
-        state.videos = action.payload.data.items
+        const { videos, nextPageToken,category } = action.payload
+        
+
+        if (state.activeCategory === category) {
+          //create an array which key is video.id ,and value is video object
+          const videoMap = new Map(state.videos.map(video => [video.id, video]))
+          videos.forEach(video => {
+            //if videos doesnt have video.id
+            if (!videoMap.has(video.id)) {
+              videoMap.set(video.id, video)//set current video.id as key and object as value
+            }
+          })
+          state.videos=Array.from(videoMap.values())
+        } else {
+          state.videos=videos
+        }
+        
+        state.nextPageToken = nextPageToken
         state.loading = false
-        state.error = null;
-        state.nextPageToken = action.payload.data.nextPageToken
-        // state.category='All'
+        console.log(state.videos)
+      
+
       })
     
       .addCase(getChannelIcon.fulfilled, (state, action) => {
@@ -133,11 +163,11 @@ const videoSlice = createSlice({
       })
     
       .addCase(getVideosByCategory.fulfilled, (state, action) => {
-         state.videos = action.payload.videos;
+      const{videos,nextPageToken,category}=action.payload
+      state.videos = videos.items;
       state.loading = false;
-      state.error = null;
-      state.nextPageToken = action.payload.nextPageToken;
-      // state.category = action.payload.category;
+      state.nextPageToken = nextPageToken;
+      state.category = category;
       })
   }
 })

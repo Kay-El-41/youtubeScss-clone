@@ -38,7 +38,7 @@ when you use axios.interceptors.request.use, Axios automatically provides
 the request configuration object (config) as the argument to the interceptor function. 
 */
 request.interceptors.request.use((config) => {
-  const token = localStorage.getItem('youtube_access_token');
+  const token = sessionStorage.getItem('youtube_access_token');
   if (token) {
         // If a token exists, add it to the Authorization header
     config.headers.Authorization = `Bearer ${token}`;

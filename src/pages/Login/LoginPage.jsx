@@ -17,13 +17,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   // const [loading,setLoading]=useState(false)
   const navigate = useNavigate()
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser,token } = useContext(AuthContext)
   console.log(currentUser)
   
   useEffect(() => {
     try {
 
-      if (currentUser) {
+      if (currentUser && token) {
       
          /*
         The replace option comes from React Router's navigation API.
