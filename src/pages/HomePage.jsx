@@ -11,9 +11,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const videos = useSelector((state) => state.videos.videos);
-  const error = useSelector((state) => state.videos.error);
-  const loading = useSelector((state) => state.videos.loading);
+  const { videos,error,loading } = useSelector((state) => state.videos);
+  
   // const currentUser = useContext(AuthContext)
  
   useEffect(() => {

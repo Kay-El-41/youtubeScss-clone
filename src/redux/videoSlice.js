@@ -15,16 +15,15 @@ export const getPopularVideos = createAsyncThunk(
         }
       });
       console.log(res)
+      console.log(res.data.items)
+
       return {
         videos: res.data.items,
         nextPageToken: res.data.nextPageToken,
         category:'All'
       }
     } catch (error) {
-      if (error.response?.status === 403) {
-        // Redirect to login or refresh token
-        window.location.href = '/login';
-      }
+     console.log(error)
       return rejectWithValue(error.message);
     }
   }
@@ -55,7 +54,7 @@ export const getVideosByCategory = createAsyncThunk(
   second parameter is an object containing additional utilities
   provided by Redux Toolkit.
    */
-  async (keyword, { getState }) => {
+  async (keyword, { getState,rejectWithValue }) => {
     try {
       /*
       get nextPageToken state from videos slice using getState() function
@@ -103,7 +102,8 @@ export const getVideosByCategory = createAsyncThunk(
       };
     }catch (error) {
     console.log(error)
-  }
+      return rejectWithValue(error.message)
+    }
   }
   )
 

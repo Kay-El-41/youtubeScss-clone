@@ -19,11 +19,12 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const { currentUser,token } = useContext(AuthContext)
   console.log(currentUser)
+  console.log(token)
   
   useEffect(() => {
     try {
 
-      if (currentUser && token) {
+      if (currentUser) {
       
          /*
         The replace option comes from React Router's navigation API.
@@ -41,7 +42,7 @@ export default function LoginPage() {
       console.log(error)
     } 
     
-  }, [currentUser, navigate])
+  }, [currentUser, navigate,token])
   
   const toggleSignUp = () => {
     setFormTitle('SignUp')

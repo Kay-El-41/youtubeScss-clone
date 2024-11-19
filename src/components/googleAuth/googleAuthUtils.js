@@ -65,8 +65,8 @@ export const authenticateYouTube = async (skipPrompt = false) => {
             if (response && response.access_token) {
               const tokenExpiryTime = Date.now() + response.expires_in * 1000;
               console.log('token expiry:', tokenExpiryTime)
-              sessionStorage.setItem('youtube_access_token', response.access_token);
-              sessionStorage.setItem('youtube_token_expiry', tokenExpiryTime);
+              localStorage.setItem('youtube_access_token', response.access_token);
+              localStorage.setItem('youtube_token_expiry', tokenExpiryTime);
               resolve(response.access_token);
             } else {
               reject(new Error('Failed to get access token'));
@@ -101,10 +101,10 @@ export const authenticateYouTube = async (skipPrompt = false) => {
 
 export const getAccessToken = async () => {
   console.log('getAccessToken function executed')
-  const storedToken = sessionStorage.getItem('youtube_access_token')
-  const storedTokenExpiry = sessionStorage.getItem('youtube_token_expiry')
+  const storedToken = localStorage.getItem('youtube_access_token')
+  const storedTokenExpiry = localStorage.getItem('youtube_token_expiry')
 
-  if ((storedToken && Date.now()) < storedTokenExpiry) {
+  if ((storedToken && ((Date.now()) < storedTokenExpiry))) {
   return storedToken
   }  
   return await authenticateYouTube(true)
