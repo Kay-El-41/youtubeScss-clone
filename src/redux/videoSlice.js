@@ -23,7 +23,7 @@ export const getPopularVideos = createAsyncThunk(
         category:'All'
       }
     } catch (error) {
-     console.log(error)
+     console.log(error.message)
       return rejectWithValue(error.message);
     }
   }
@@ -86,7 +86,7 @@ export const getVideosByCategory = createAsyncThunk(
       data: Original property name in the object.
       videoData: The new variable name you want to use.
       */
-      const { data: videoData } = await request('/videos', {
+      const { data: videoData } = await request.get('/videos', {
         params: {
           part: 'snippet,contentDetails,statistics',
           id: videoIds,//retrive specific video based on videoIds
@@ -149,7 +149,7 @@ const videoSlice = createSlice({
         
         state.nextPageToken = nextPageToken
         state.loading = false
-        console.log(state.videos)
+        // console.log(state.videos)
       
 
       })

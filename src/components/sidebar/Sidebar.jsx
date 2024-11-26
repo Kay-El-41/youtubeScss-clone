@@ -20,7 +20,8 @@ import { auth } from '../../firebase'
 export default function Sidebar({sidebar,handleToggleSidebar}) {
   const navigate = useNavigate()
   
-  const handleLogout =async  () => {
+  const handleLogout = async () => {
+    sessionStorage.removeItem()
     await auth.signOut()//wait for signout before continue
     navigate('/login')
  }

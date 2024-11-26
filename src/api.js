@@ -39,6 +39,7 @@ the request configuration object (config) as the argument to the interceptor fun
 */
 request.interceptors.request.use((config) => {
   const token = localStorage.getItem('youtube_access_token');
+  console.log(token)
   if (token) {
         // If a token exists, add it to the Authorization header
     config.headers.Authorization = `Bearer ${token}`;

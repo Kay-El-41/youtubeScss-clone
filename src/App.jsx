@@ -9,6 +9,7 @@ import { useState } from "react";
 import {AuthProvider} from "./components/AuthProvider";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import WatchPage from "./pages/Watch/WatchPage";
 
 export  function Layout() {
   const [sidebar, toggleSidebar] = useState(false)
@@ -39,8 +40,9 @@ export default function App() {
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/" element={<Layout />}>
           <Route index element={<HomePage/>} />
-          {/* <Route path="/search" element={}/> */}
-        </Route>
+              {/* <Route path="/search" element={}/> */}
+          <Route path="watch/:id" element={<WatchPage />} />
+           </Route>
         <Route path="*" element={<LoginPage/>} />
       </Routes>
       </BrowserRouter>

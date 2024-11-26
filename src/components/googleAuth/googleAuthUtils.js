@@ -44,7 +44,7 @@ export const loadGisScript = () => {
 
 
 
-export const authenticateYouTube = async (skipPrompt = false) => {
+export const authenticateYouTube = async ({skipPrompt='false'}) => {
  let tokenClient = null;
   try {
     const accounts = await loadGisScript();
@@ -90,7 +90,7 @@ export const authenticateYouTube = async (skipPrompt = false) => {
         true: Skip showing the consent screen (if permissions were previously granted).
         false: Show the consent screen to the user.
         */
-        prompt: skipPrompt ? '' : 'consent'
+        prompt:skipPrompt ? '' : 'consent'
       });
     });
   } catch (error) {
