@@ -1,8 +1,8 @@
 import { Col, Row } from "react-bootstrap";
 import VideoMetaData from "../../components/videoMetaData/VideoMetaData";
 import"./_watchPage.scss"
-import VideoComments from "../../components/comments/VideoComments";
-import VideoRecommended from "../../components/videoRecommended/VideoRecommended";
+import VideoComments from "../../components/videoComments/VideoComments";
+import VideoRecommend from "../../components/videoRecommend/VideoRecommend";
 
 
 export default function WatchPage() {
@@ -23,7 +23,7 @@ export default function WatchPage() {
       </Col>
       <Col lg={4}>
         {
-          [...Array(10)].map((_,index)=><VideoRecommended key={index}/>)
+          [...Array(10)].map((_,index)=><VideoRecommend key={index}/>)
         }
       </Col>
     </Row>

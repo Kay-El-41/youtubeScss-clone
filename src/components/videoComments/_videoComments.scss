@@ -1,0 +1,49 @@
+@import "../../base";
+
+.video__comments{
+  margin: 24px 0 32px;
+}
+.comments__form{
+  display: flex;
+  img{
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+  }
+
+  form{
+     display: flex;
+     flex-direction: column;
+     flex-grow: 1;
+
+     input{
+      margin-bottom: 8px;
+      background-color:transparent; 
+      border-right: none; 
+      color:whitesmoke;
+      outline: none;
+    }
+input:focus{
+      border-bottom: 1px solid white;
+      outline: 0;
+}
+    
+
+
+     .form__btn{
+      display: flex;
+      justify-content: end;
+      height: 40px;
+      column-gap: 20px;
+
+      button{
+        border-radius: 25px;
+        padding: 0 15px;
+        background-color:$button-background;
+        color: whitesmoke;
+        border: none;
+        
+      }
+     }
+  }
+}

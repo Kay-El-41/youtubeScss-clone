@@ -1,3 +1,5 @@
+
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Container } from "react-bootstrap";
 import Header from "./components/header/Header";
 import Sidebar from "./components/sidebar/Sidebar";

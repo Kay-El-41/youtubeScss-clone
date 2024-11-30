@@ -1,0 +1,54 @@
+.video{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 402px;
+  height: 97px;
+  margin-bottom: 8px;
+  
+ .video__left{
+  position: relative;
+  .video__thumbnail {
+      width: 160px;
+      height: 94px;
+      margin: 0;
+      padding: 0;
+    }
+
+  .video__duration{
+  position: absolute;
+  bottom:5px;
+  right: 0px;
+  font-size: 0.6rem;
+  padding: 2px 3px;
+  background: #080808ec;
+  border-radius: 3px;
+  }
+ }
+   
+  
+   
+
+      .video__right{
+
+        .video__title{
+          font-size: 14px;
+          margin: 0 0 4px;
+        }
+
+        .video__channel{
+          font-size: 12px;
+
+          p{
+            margin: 0;
+          }
+        }
+
+        .video__details{
+          font-size: 12px;
+        }
+      }
+  
+  
+
+}

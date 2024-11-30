@@ -1,0 +1,29 @@
+@import"../../base";
+
+.comment{
+  display: flex;
+  margin-bottom: 12px;
+
+  img{
+      height: 40px;
+      margin-right: 16px;
+      border-radius: 50%;
+    }
+
+    &__header{
+      margin-bottom: 3px;
+    }
+
+    .comment__username{
+      font-size: 13px;
+      margin-right:5px;
+      color: white;
+    }
+    .comment__time {
+          font-size: 12px;
+        }
+
+    &__content{
+      font-size:14px;
+    }
+}
