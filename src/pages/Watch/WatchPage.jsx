@@ -3,15 +3,18 @@ import VideoMetaData from "../../components/videoMetaData/VideoMetaData";
 import"./_watchPage.scss"
 import VideoComments from "../../components/videoComments/VideoComments";
 import VideoRecommend from "../../components/videoRecommend/VideoRecommend";
+import { useParams } from "react-router-dom";
 
 
 export default function WatchPage() {
+  const {id} =useParams()//get id from the page link
+  
   return (
     <Row >
       <Col lg={8}>
         <div className="watchPage__player">
           <iframe
-            src='https://www.youtube.com/embed/tgbNymZ7vqY'
+            src={`https://www.youtube.com/embed/${id}`}
             title="example"
             width={"100%"}
             height={"100%"}

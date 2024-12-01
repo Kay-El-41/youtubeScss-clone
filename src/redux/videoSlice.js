@@ -105,7 +105,24 @@ export const getVideosByCategory = createAsyncThunk(
       return rejectWithValue(error.message)
     }
   }
-  )
+)
+  
+export const getVideoById = createAsyncThunk(
+  'videos/getVideoById',
+  async (id) => {
+    try {
+      const {data}=await request.get('/videos', {
+        params: {
+          part: 'snippet.statistics',
+          id
+        }
+      })
+      return data
+    } catch(error) {
+      console.log(error)
+    }
+  }
+)
 
 
 
@@ -169,7 +186,15 @@ const videoSlice = createSlice({
       state.nextPageToken = nextPageToken;
       state.category = category;
       })
+    
+      .addCase(getVideoById.fulfilled, (state, action) => {
+       
+    })
   }
+})
+
+const selectedVideoSlice = createSlice({
+  
 })
 
 export default videoSlice.reducer

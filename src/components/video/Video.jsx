@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChannelIcon } from '../../redux/videoSlice';
 import numeral from 'numeral';
+import {  useNavigate } from 'react-router-dom';
 
 
 export default function Video({ video }) {
@@ -18,15 +19,17 @@ export default function Video({ video }) {
       publishedAt = ''
     } = {},
     contentDetails,
+    id:videoId,
     statistics: { viewCount = 0 } = {}
-  } = video||{};
+  } = video || {};
+  console.log(video)
   const dispatch=useDispatch()
   const channelIcon=useSelector((state)=>state.videos.channelIcons[channelId])
   const seconds=moment.duration(contentDetails.duration).asSeconds()
   //second *1000 to convert to millisecond
   //HH represent 24 hour format while hh represent 12 hour format
   const videoDuration = moment.utc(seconds * 1000).format('mm:ss')
-  
+  const navigate=useNavigate()
 
 
   useEffect(() => {
@@ -36,13 +39,13 @@ export default function Video({ video }) {
   }, [channelId, dispatch,channelIcon])
   
   if(!video) return null;
-  
- 
-
+  const handleVideoClick = () => {
+    navigate(`/watch/${videoId}`)
+  }
   
 
   return (
-    <div className='video'>
+    <div className='video' onClick={handleVideoClick}>
       <div className="video_top">
         <img src={medium.url} alt={title} />
         <span>{videoDuration}</span>
