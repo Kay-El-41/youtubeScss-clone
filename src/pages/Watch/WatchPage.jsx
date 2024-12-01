@@ -7,7 +7,7 @@ import VideoRecommend from "../../components/videoRecommend/VideoRecommend";
 
 export default function WatchPage() {
   return (
-    <Row>
+    <Row >
       <Col lg={8}>
         <div className="watchPage__player">
           <iframe

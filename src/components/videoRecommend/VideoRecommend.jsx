@@ -1,6 +1,5 @@
 import { Col, Row } from 'react-bootstrap'
 import './_videoRecommend.scss'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 import moment from 'moment'
 import numeral from 'numeral'
 export default function VideoRecommend() {
@@ -10,15 +9,14 @@ export default function VideoRecommend() {
   const videoDuration = moment.utc(seconds * 1000).format('mm:ss')
   
   return (
-    <Row className='video'>
+    <Row className='video__recommend'>
       
       <Col xs={5} md={4} lg={5}
         className='video__left m-0' 
       >
-        <LazyLoadImage
+        <img
         src='https://i.ytimg.com/vi/ytrtFsXRXGY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD-wcaN5w1kfXw6vy2pVEAm2qLY2A'
           className='video__thumbnail'
-          wrapperClassName='video__thumbnail__wrapper'
         />
           <span className='video__duration'>{videoDuration}</span>
       </Col>

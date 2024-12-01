@@ -1,24 +1,25 @@
-.video{
-  margin: 0;
-  padding: 0;
+.video__recommend{  
   display: flex;
   width: 402px;
   height: 97px;
   margin-bottom: 8px;
   
+  
  .video__left{
+  margin: 0;
+  padding: 0;
   position: relative;
   .video__thumbnail {
-      width: 160px;
-      height: 94px;
-      margin: 0;
-      padding: 0;
+      width: 100%;
+      height: 100%;
+      border-radius:5px ;
+     
     }
 
   .video__duration{
   position: absolute;
   bottom:5px;
-  right: 0px;
+  right: 5px;
   font-size: 0.6rem;
   padding: 2px 3px;
   background: #080808ec;
@@ -30,14 +31,14 @@
    
 
       .video__right{
-
+        
         .video__title{
           font-size: 14px;
           margin: 0 0 4px;
         }
 
         .video__channel{
-          font-size: 12px;
+          font-size: 11px;
 
           p{
             margin: 0;
@@ -45,8 +46,7 @@
         }
 
         .video__details{
-          font-size: 12px;
-        }
+          font-size: 11px;        }
       }
   
   
