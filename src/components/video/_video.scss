@@ -44,7 +44,8 @@
 
   &_title{
     margin-bottom: 0.1rem;
-    color: #fff
+    color: #fff;
+    @include line-clamp(2)
   }
 
   &_details{

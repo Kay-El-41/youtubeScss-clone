@@ -4,6 +4,10 @@
   align-items: center;
   width: 100%;
 
+  &__top h5{
+    color: whitesmoke;
+  }
+
   button{
     
         background-color: $button-background ;

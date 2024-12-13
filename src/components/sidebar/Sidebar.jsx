@@ -21,7 +21,6 @@ export default function Sidebar({sidebar,handleToggleSidebar}) {
   const navigate = useNavigate()
   
   const handleLogout = async () => {
-    sessionStorage.removeItem()
     await auth.signOut()//wait for signout before continue
     navigate('/login')
  }

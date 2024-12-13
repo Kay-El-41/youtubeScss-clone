@@ -54,7 +54,7 @@ export const authenticateYouTube = async ({skipPrompt='false'}) => {
         // accounts.oauth2.initTokenClient Initializes an OAuth 2.0 token client using the GIS library.
         tokenClient = accounts.oauth2.initTokenClient({
           client_id: '1002730959732-lc7vramqcgk63pbltqd1qh7ehl2llff6.apps.googleusercontent.com',
-          scope: 'https://www.googleapis.com/auth/youtube.readonly',
+          scope: 'https://www.googleapis.com/auth/youtube.force-ssl',
           /*The callback in the initTokenClient configuration is a function
            that is executed automatically when Google's OAuth 2.0 server sends
             a response after the token request. This response is the outcome of the OAuth flow,
@@ -107,5 +107,5 @@ export const getAccessToken = async () => {
   if ((storedToken && ((Date.now()) < storedTokenExpiry))) {
   return storedToken
   }  
-  return await authenticateYouTube(true)
+  return await authenticateYouTube(false)
 }

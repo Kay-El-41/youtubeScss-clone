@@ -4,11 +4,13 @@ import { Button, Form, FormGroup } from 'react-bootstrap'
 import './_loginPage.scss'
 // import { useDispatch, useSelector } from 'react-redux'
 // import { login, signUp } from '../../redux/login/authSlice'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { authenticateYouTube } from '../../components/googleAuth/googleAuthUtils'
 import { AuthContext } from '../../components/AuthProvider'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
+import axios from 'axios'
 
 
 export default function LoginPage() {
@@ -20,6 +22,7 @@ export default function LoginPage() {
   const { currentUser,token } = useContext(AuthContext)
   console.log(currentUser)
   console.log(token)
+  const API_URL=``
   
   useEffect(() => {
     try {
@@ -48,23 +51,83 @@ export default function LoginPage() {
     setFormTitle('SignUp')
   }
 
+  const createDefaultProfilePicture = async (email) => {
+    const firstLetter = await email.charAt(0).toUpperCase()
+    return `https://ui-avatars.com/api/?name=${firstLetter}&background=random`
+  }
+
+  const createUserInFirestoreDB = async (user) => {
+    const userUID = user.uid
+    const userDocRef = doc(db, 'users', userUID)
+    const userDoc = await getDoc(userDocRef)
+    const defaultUsername= email.split('@')[0];
+
+    const defaultProfilePicture = await createDefaultProfilePicture(user.email)
+    console.log(user)
+
+    if (!userDoc.exists()) {
+      const userFields = {
+        profileImg: defaultProfilePicture,
+        email: user.email,
+        username: defaultUsername,
+        createdAt:new Date()
+      }
+
+      await setDoc(doc(db,'users',userUID),userFields)
+    
+   
+    }
+  }
+  const insertUserInPostgreUsers =async (user) => {
+    const userUID = user.uid
+    const userEmail=user.email
+    const userDocRef = doc(db, 'users', userUID)
+    const userDoc=await getDoc(userDocRef)
+    let userData;
+    if (userDoc.exists()) {
+      userData = userDoc.userData()
+    }
+
+    try {
+      
+      const firebaseProfileImg = userData.profileImg
+      
+      const data = {
+        userUID,
+        email: userEmail,
+        firebaseProfileImg
+      }
+      const response=await axios.post(`${API_URL}/saveUser`,data)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  // const insertUserInPostgreUsers=
+
   const handleSignUp = async(e) => {
     e.preventDefault()
     
     try {
-       await createUserWithEmailAndPassword(
+       const res=await createUserWithEmailAndPassword(
         auth,
         email,
         password
       )
-      await authenticateYouTube(true)
+      console.log(res)
+      const user=res.user
+      await authenticateYouTube(false)
+      await createUserInFirestoreDB(user)
+      await insertUserInPostgreUsers(user)
       
     }catch(error){
       console.log('Sign-up error',error)
     } 
   }
 
-  const handleEmailAuth=async  (e) => {
+  const handleLogIn=async  (e) => {
     e.preventDefault()
 
    
@@ -94,7 +157,7 @@ export default function LoginPage() {
               </p>
           </div>
           <div className='form_container'>
-            <Form onSubmit={formTitle==='Login'?handleEmailAuth:handleSignUp}>
+            <Form onSubmit={formTitle==='Login'?handleLogIn:handleSignUp}>
               <FormGroup controlId='email'>
                 <Form.Control onChange={(e)=>setEmail(e.target.value)} className='form_control' type='email' placeholder='Email'/>
               </FormGroup>

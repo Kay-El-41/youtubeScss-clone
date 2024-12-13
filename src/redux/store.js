@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import authReducer from './login/authSlice'
-import videoReducer from './videoSlice'
+import videosReducer, { relatedVideoReducer, selectedVideoReducer } from './videoSlice'
 import channelReducer from "./channelSlice"
-
+import commentsReducer from "./commentsSlice"
 export default configureStore({
   reducer: {
     // auth:authReducer
-    videos: videoReducer,
-    channel:channelReducer
+    videos: videosReducer,
+    channel: channelReducer,
+    selectedVideo:selectedVideoReducer,
+    comments: commentsReducer,
+    relatedVideo:relatedVideoReducer
   }
 })

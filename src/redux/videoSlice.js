@@ -15,7 +15,7 @@ export const getPopularVideos = createAsyncThunk(
         }
       });
       console.log(res)
-      console.log(res.data.items)
+      // console.log(res.data.items)
 
       return {
         videos: res.data.items,
@@ -23,7 +23,7 @@ export const getPopularVideos = createAsyncThunk(
         category:'All'
       }
     } catch (error) {
-     console.log(error.message)
+     console.log(error)
       return rejectWithValue(error.message);
     }
   }
@@ -108,22 +108,116 @@ export const getVideosByCategory = createAsyncThunk(
 )
   
 export const getVideoById = createAsyncThunk(
-  'videos/getVideoById',
+  'selectedVideo/getVideoById',
   async (id) => {
     try {
       const {data}=await request.get('/videos', {
         params: {
-          part: 'snippet.statistics',
+          part: 'snippet,statistics',
           id
         }
       })
-      return data
+      console.log(data.items[0])
+      return data.items[0]
     } catch(error) {
       console.log(error)
     }
   }
 )
 
+export const getChannelData = createAsyncThunk(
+  'selectedVideo/getChannelData',
+  async (id) => {
+    try {
+      const response=await request.get('/channels', {
+        params: {
+          part: 'snippet,statistics,contentDetails',
+          id   
+        }
+      })
+      console.log(response)
+      return response.data.items[0]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+export const getRelatedVideo = createAsyncThunk(
+  'relatedVideo/getRelatedVideo',
+  async ({videoCategoryId}) => {
+    try {
+      const { data } = await request.get('/search', {
+      params: {
+        part: 'snippet',
+        videoCategoryId,
+        maxResults: 20,
+        type:'video'
+      }
+    })
+      // console.log(data)
+      
+      //filter out the videoId and join together
+      const videoIds = data.items.map(item => item.id.videoId).join(',');
+
+      // Get full video details
+      /*
+      data: Original property name in the object.
+      videoData: The new variable name you want to use.
+      */
+      //{ data: videoData } 
+      const {data:videosData} = await request.get('/videos', {
+        params: {
+          part: 'snippet,contentDetails,statistics',
+
+          id: videoIds,//retrive specific video based on videoIds
+        }
+      });
+      console.log(videosData.items)
+    return videosData.items
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+const getVideoBySearch = createAsyncThunk(
+  'searchVideos/getVideoBySearch',
+  async (query) => {
+    try {
+      const response = await request.get('/search',
+        {
+          /*
+          
+params: {
+          part: 'snippet',
+          maxResults: 20,
+          pageToken: nextPageToken,
+          The q parameter in the YouTube Data API is typically
+           used as a search query parameter. It allows you to 
+           specify a text string to search for videos, playlists,
+           or channels that match the query. 
+          q: keyword,
+          type:'video'
+        
+
+           */
+          const nextPageToken=
+          params: {
+            part: 'snippet',
+            maxResults: 25,
+            pageToken:nextPageToken,
+            q: query,
+            type:"video"
+        }
+        
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
 
 
 
@@ -187,14 +281,47 @@ const videoSlice = createSlice({
       state.category = category;
       })
     
-      .addCase(getVideoById.fulfilled, (state, action) => {
-       
-    })
+      
   }
 })
 
 const selectedVideoSlice = createSlice({
+  name: 'selectedVideo',
+  initialState: {
+    loading: true,
+    videoData: null,
+    channelData:null
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getVideoById.fulfilled, (state, action) => {
+        state.videoData = action.payload
+        state.loading=false
+      })
+    
+    .addCase(getChannelData.fulfilled, (state, action) => {
+    state.channelData=action.payload
+  })
+  }
+})
+
+const relatedVideoSlice = createSlice({
+  name: 'relatedVideo',
+  initialState: {
+    loading:true,
+    relatedVideos:[]
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getRelatedVideo.fulfilled, (state, action) => {
+        state.relatedVideos = action.payload
+        state.loading=false
+    })
+  }
   
 })
 
+
+export const relatedVideoReducer=relatedVideoSlice.reducer
+export const selectedVideoReducer=selectedVideoSlice.reducer
 export default videoSlice.reducer

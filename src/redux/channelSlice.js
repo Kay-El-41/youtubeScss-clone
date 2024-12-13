@@ -14,7 +14,7 @@ export const getChannelData = createAsyncThunk(
 const channelSlice = createSlice({
   name: "channel",
   initialState: {
-   channelData:{}
+  channelData:{}
   },
   extraReducers:(builder)=> {
     builder

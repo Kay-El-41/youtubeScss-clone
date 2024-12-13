@@ -3,9 +3,20 @@ import './_header.scss'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { MdApps, MdNotifications } from 'react-icons/md'
 import { VscAccount } from "react-icons/vsc";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Header({handleToggleSidebar}) {
+
+const [query,setQuery]=useState('')
+const navigate=useNavigate()
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    navigate(`/search/${query}`)
+
+  }
   return (
     <div className='border border-dark header'>
       
@@ -21,8 +32,8 @@ export default function Header({handleToggleSidebar}) {
       />
       <span className='_title'>YouTube</span>
     </div>
-      <form>
-        <input type='text' placeholder='Search' />
+      <form onSubmit={handleSubmit}>
+        <input type='text' placeholder='Search' value={query} onChange={(e)=>setQuery(e.target.value)}/>
         <button type='submit'>
           <AiOutlineSearch size={22}/>{/*render a magnifying glass */}
         </button>

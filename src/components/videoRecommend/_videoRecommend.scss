@@ -1,25 +1,31 @@
-.video__recommend{  
+@import  '../../base.scss';
+
+.video__recommend{
   display: flex;
   width: 402px;
-  height: 97px;
-  margin-bottom: 8px;
-  
-  
- .video__left{
-  margin: 0;
+  height: 100px;
+  box-sizing: border-box;
   padding: 0;
+  margin: 0;
+
+ .video__left{
+  padding: 0;;
   position: relative;
+  width: 130px;
+  height: 100%;
   .video__thumbnail {
+     object-fit: cover;
       width: 100%;
-      height: 100%;
-      border-radius:5px ;
+      height: 80%;
+      padding: 0px ;
+      
      
     }
 
   .video__duration{
   position: absolute;
-  bottom:5px;
-  right: 5px;
+  bottom: 20px;
+  right: 2px;
   font-size: 0.6rem;
   padding: 2px 3px;
   background: #080808ec;
@@ -31,10 +37,12 @@
    
 
       .video__right{
-        
+        height: 100px;
+
         .video__title{
           font-size: 14px;
           margin: 0 0 4px;
+          @include line-clamp(2);
         }
 
         .video__channel{

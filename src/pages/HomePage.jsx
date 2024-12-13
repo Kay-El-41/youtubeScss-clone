@@ -17,7 +17,7 @@ export default function HomePage() {
  
   useEffect(() => {
     dispatch(getPopularVideos());
-    console.log('useEffect run')
+    console.log('HomePage useEffect run')
   }, []);
 
   // console.log('Videos state:', videos);
