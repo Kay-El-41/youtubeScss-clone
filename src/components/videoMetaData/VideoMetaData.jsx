@@ -9,10 +9,10 @@ import { getChannelData } from "../../redux/videoSlice"
 export default function VideoMetaData() {
 
   const videoData = useSelector((state) => state.selectedVideo.videoData)
-  console.log(videoData)
+  // console.log(videoData)
 
   const channelData = useSelector((state) => state.selectedVideo.channelData)
-  console.log(channelData)
+  // console.log(channelData)
 
   const dispatch = useDispatch()
   

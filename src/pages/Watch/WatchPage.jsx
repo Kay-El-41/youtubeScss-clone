@@ -5,8 +5,9 @@ import VideoComments from "../../components/videoComments/VideoComments";
 import VideoRecommend from "../../components/videoRecommend/VideoRecommend";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect} from "react";
 import {  getRelatedVideo, getVideoById } from "../../redux/videoSlice";
+import axios from "axios";
 
 
 export default function WatchPage() {
@@ -15,12 +16,36 @@ export default function WatchPage() {
   // // const currentVideo =useSelector((state)=>state.selectedVideo.videoData)
   // console.log(currentVideo)
   const { videoData ,loading} = useSelector((state) => state.selectedVideo)
-  console.log(videoData)  
+  // console.log(videoData)  
 
   const relatedVideos=useSelector((state)=>state.relatedVideo.relatedVideos)
-  const relatedVideoLoadingState=useSelector((state)=>state.relatedVideo.loading)
-  console.log(relatedVideos)
+  const relatedVideoLoadingState = useSelector((state) => state.relatedVideo.loading)
   
+  // console.log(relatedVideos)
+
+  
+  
+  useEffect(() => {
+    
+const addVideoToPostgresVideos = async (id) => {
+    try {
+      if (videoData ) {
+        const API_URL = `https://39975667-344b-4e82-9b8c-67c09af543e0-00-1secia8f318w6.sisko.replit.dev`
+        const videoTitle = videoData?.snippet.localized.title
+        // console.log(videoTitle)
+         await axios.post(`${API_URL}/addVideo/${id}`, { videoTitle } )
+  
+        // console.log(res)
+      }
+       
+    } catch (error) {
+      console.log(error)
+  }
+    }
+      addVideoToPostgresVideos(id)
+
+},[videoData,id])
+
   useEffect(() => {
     dispatch(getVideoById(id))
     // dispatch(getRelatedVideo(videoCategoryId))
@@ -41,7 +66,7 @@ export default function WatchPage() {
    
 
      return (
-      <Row >
+      <Row className="watchPage__container" >
       <Col lg={8}>
         <div className="watchPage__player">
           <iframe
@@ -55,11 +80,12 @@ export default function WatchPage() {
         <VideoMetaData />
         <VideoComments videoId={id} />
       </Col>
-      <Col lg={4}>
+         <Col lg={4}>
            {
              !relatedVideoLoadingState && relatedVideos ? (
                relatedVideos.map((video) => (
-                 <VideoRecommend key={video.id} relatedVideo={video} />
+                 <VideoRecommend key={video.id} relatedVideo={video}
+ />
              ))  
              ) : (
                 <Spinner variant="light" animation="border" />

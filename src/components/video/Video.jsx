@@ -22,7 +22,7 @@ export default function Video({ video }) {
     id:videoId,
     statistics: { viewCount = 0 } = {}
   } = video || {};
-  console.log(video)
+  // console.log(video)
   const dispatch=useDispatch()
   const channelIcon=useSelector((state)=>state.videos.channelIcons[channelId])
   const seconds=moment.duration(contentDetails.duration).asSeconds()
@@ -31,6 +31,7 @@ export default function Video({ video }) {
   const videoDuration = moment.utc(seconds * 1000).format('mm:ss')
   const navigate=useNavigate()
 
+  // console.log(channelIcon)
 
   useEffect(() => {
     if(channelId){
@@ -61,7 +62,7 @@ export default function Video({ video }) {
             {title}
           </div>
           <div className="video_details">
-            <span>{numeral(viewCount).format('0.a')} views{' '}</span>{' '} • 
+            <span>{numeral(viewCount).format('0.a')} views{' • '}</span>  
             <span>{moment(publishedAt).fromNow()}</span>
           </div>
           <div className="video_channel">

@@ -1,62 +1,133 @@
-@import  '../../base.scss';
 
-.video__recommend{
-  display: flex;
-  width: 402px;
-  height: 100px;
+
+@import '../../base.scss';
+
+.videoHorizontal {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  cursor: pointer;
+  min-width: 380px;
+  padding-right: 5px;
+ 
+  &__left {
+    position: relative;
+    padding-left: 0 !important;
+    width: 45%;
+  }
 
- .video__left{
-  padding: 0;;
-  position: relative;
-  width: 130px;
-  height: 100%;
-  .video__thumbnail {
-     object-fit: cover;
+  &__right{
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    
+  }
+
+  &__thumbnail {
+    flex-shrink: none;
+   width: 100%;
+   height: auto;
+   object-fit: cover;
+   aspect-ratio: 16/9;
+   border-radius: 10px;
+   
+
+    &-wrapper {
       width: 100%;
-      height: 80%;
-      padding: 0px ;
-      
-     
+    }
+  }
+
+  &__duration {
+    position: absolute;
+
+    bottom: 0.6rem;
+    right: 1.2rem;
+
+    font-size: 0.7rem;
+    padding: 0.1rem;
+    background: #080808ec;
+    border-radius: 3px;
+  }
+
+  &__details {
+    font-size: 12px;
+    column-gap: 5px;
+  }
+
+  &__title {
+    font-size: 14px;
+
+    color: #fff;
+    letter-spacing: 0.3px;
+    line-height: 1.2rem;
+    @include line-clamp(2);
+  }
+
+  &__desc {
+    @include line-clamp(1);
+    font-size: 12px;
+    margin:0 ;
+    flex-wrap: nowrap; 
+ }
+
+  &__channel {
+    display: flex;
+    align-items: center;
+  
+    
+    img {  
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      cursor: pointer;
     }
 
-  .video__duration{
-  position: absolute;
-  bottom: 20px;
-  right: 2px;
-  font-size: 0.6rem;
-  padding: 2px 3px;
-  background: #080808ec;
-  border-radius: 3px;
+    p {
+      font-size: 12px;
+      @include line-clamp(1);
+    }
   }
- }
-   
-  
-   
+}
 
-      .video__right{
-        height: 100px;
+// @media(max-width:$breakpint-large){
 
-        .video__title{
-          font-size: 14px;
-          margin: 0 0 4px;
-          @include line-clamp(2);
-        }
+// }
+@media(max-width:$breakpoint-medium){
 
-        .video__channel{
-          font-size: 11px;
+}
 
-          p{
-            margin: 0;
-          }
-        }
+@media (max-width: $breakpoint-small) {
+  .videoHorizontal {
+    font-size: 0.8rem;
 
-        .video__details{
-          font-size: 11px;        }
+    &__details {
+      @include line-clamp(1);
+      white-space: nowrap
+    }
+
+    &__channel {
+      margin: 0.1rem 0;
+
+      img {
+        width: 10px;
+        display: none;
       }
-  
-  
 
+      p {
+        font-size: 0.8rem;
+      }
+    }
+
+    &__desc {
+      display: none;
+    }
+
+    &__title {
+      font-size: 0.9rem;
+      @include line-clamp(1);
+    }
+  }
 }

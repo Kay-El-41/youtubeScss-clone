@@ -7,11 +7,12 @@ $black-secondary:#121417;
 $border-color:#4c4c4c;
 $button-background:#FFFFFF14;
 
-
-$breakpoint-medium:1199px;
+$breakpoint-extra-large:1399px;
+$breakpoint-large:1199px;
 $breakpoint-medium:991px;
 $breakpoint-small:767px;
 $breakpoint-extra-small:576px;
+
 
 @mixin line-clamp($number) {
   overflow: hidden;

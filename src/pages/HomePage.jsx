@@ -3,22 +3,21 @@ import CategoriesBar from '../components/categoriesBar/CategoriesBar'
 import Video from '../components/video/Video'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPopularVideos, getVideosByCategory } from '../redux/videoSlice'
-import {  useEffect } from 'react'
+import {   useEffect } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-// import { AuthContext } from '../components/AuthProvider'
-// import { useNavigate } from 'react-router-dom'
+
 
 
 export default function HomePage() {
+  console.log('homepage run')
   const dispatch = useDispatch();
   const { videos,loading,activeCategory } = useSelector((state) => state.videos);
   
-  // const currentUser = useContext(AuthContext)
- 
+
   useEffect(() => {
     dispatch(getPopularVideos());
     console.log('HomePage useEffect run')
-  }, []);
+  }, [dispatch]);
 
   // console.log('Videos state:', videos);
 

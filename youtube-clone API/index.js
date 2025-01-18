@@ -1,46 +1,4 @@
-// e the os and process modules to monitor system resources like CPU and memory usage. Here’s how you can write a script to show the RAM and CPU usage in Replit:
-
-// Steps:
-// Use the built-in os and process modules: Node.js provides the os module to retrieve information about the system, including memory and CPU. The process module provides memory usage details for the Node.js process.
-
-// Write the Monitoring Code: You can use the following code to get the CPU usage and RAM usage:
-
-// javascript
-// Copy code
-const os = require("os");
-
-function getSystemUsage() {
-  // Get CPU usage
-  const cpus = os.cpus(); // Information about the CPU cores
-  const cpuCount = cpus.length;
-  let cpuUsage = 0;
-
-  // Calculate average CPU load over all cores
-  cpus.forEach((cpu) => {
-    const total = Object.values(cpu.times).reduce((acc, val) => acc + val, 0);
-    const idle = cpu.times.idle;
-    const used = total - idle;
-    cpuUsage += (used / total) * 100;
-  });
-  cpuUsage /= cpuCount;
-
-  // Get RAM usage
-  const totalMemory = os.totalmem(); // Total system memory in bytes
-  const freeMemory = os.freemem(); // Free system memory in bytes
-  const usedMemory = totalMemory - freeMemory; // Used system memory in bytes
-
-  console.log(`CPU Usage: ${cpuUsage.toFixed(2)}% across ${cpuCount} cores`);
-  console.log(
-    `RAM Usage: ${(usedMemory / (1024 * 1024)).toFixed(2)} MB / ${(totalMemory / (1024 * 1024)).toFixed(2)} MB`,
-  );
-  console.log(`Available RAM: ${(freeMemory / (1024 * 1024)).toFixed(2)} MB`);
-}
-
-// Run the function to monitor system usage
-getSystemUsage();
-
 let express = require("express");
-const cors = require("cors");
 
 //to load environment variable from .env file into process.env
 require("dotenv").config();
@@ -49,7 +7,16 @@ const { Pool } = require("pg");
 const { DATABASE_URL } = process.env;
 
 let app = express();
-app.use(cors());
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true, // Allow cookies if needed
+  }),
+);
+
+app.use(express.json());
 
 //express.json() is a built in middleware function in express that parses incoming request with JSON payloads
 //json payload is the data pass from the request
@@ -101,24 +68,36 @@ const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+app.options("*", cors());
+
+// Initialize Firebase Admin SDK
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+}
 
 const pool = new Pool({
   connectionString: DATABASE_URL,
+  ssl: {
+    require: true,
+  },
 });
 
 app.post("/saveUser", async (req, res) => {
   const client = await pool.connect();
-  const { userUID, email, firebaseProfileImg } = req.body;
+  const { userUID, email } = req.body;
+  console.log(req.body);
   try {
     const userExist = await client.query(
       "SELECT * from users WHERE firebase_uid=$1",
       [userUID],
     );
-    console.log(userExist);
+    console.log("76", userExist);
     if (userExist.rows.length === 0) {
       const result = await client.query(
-        "INSERT INTO users(firebase_uid,email,firebase_profileimg) VALUES($1,$2,$3) RETURNING *",
-        [userUID, email, firebaseProfileImg],
+        "INSERT INTO users(firebase_uid,email) VALUES($1,$2) RETURNING *",
+        [userUID, email],
       );
       res.status(200).json({ user: result.rows[0] });
     } else {
@@ -136,24 +115,29 @@ app.post("/addVideo/:videoId", async (req, res) => {
   const { videoId } = req.params;
   const { videoTitle } = req.body;
 
+  console.log(req.body);
+  console.log(req.params);
+
   try {
     const videoExists = await client.query(
-      `SELECT * FROM videos WHERE "videoId"=$1`,
+      "SELECT * FROM videos WHERE videoId=$1",
       [videoId],
     );
-    console.log(videoExists);
+    console.log("110", videoExists);
 
-    if (videoExists.rows.length > 0) {
-      res.status(403).json({ messages: "Video already exists" });
+    if (videoExists.rows.length === 0) {
+      const result = await client.query(
+        "INSERT INTO videos (videoId,title) VALUES($1,$2) RETURNING *",
+        [videoId, videoTitle],
+      );
+      res.status(200).json({
+        messages: "video successfully added",
+        video: result.rows[0],
+      });
     }
-    const response = await client.query(
-      `INSERT INTO videos("videoId",title) VALUES($1,$2) RETURNING *`,
-      [videoId, videoTitle],
-    );
-    res.status(200).json({
-      messages: `video with id ${videoId}successfully added`,
-    });
+    return res.status(403).json({ messages: "Video already exists" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ messages: error });
   } finally {
     client.release();
@@ -167,6 +151,9 @@ app.post("/comment", async (req, res) => {
   const { comment, videoId, userUID } = req.body;
 
   try {
+    if (!comment || !videoId || !userUID) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
     /* verifyIdToken()
     It is a function provided by the admin.auth() service in the   Firebase Admin SDK.
     It decodes and verifies a Firebase ID token (JWT) sent by the client (e.g., a mobile app or frontend web app) to ensure the token is valid and issued by Firebase.
@@ -177,11 +164,12 @@ app.post("/comment", async (req, res) => {
 
     //users collection ,uid doc
     const userRef = admin.firestore().collection("users").doc(userUID);
+    console.log("139", userRef);
     //fetch the dcument's data
     const userDoc = await userRef.get();
 
     if (!userDoc.exists) {
-      res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     //access data in the document
     const userData = userDoc.data();
@@ -200,11 +188,11 @@ app.post("/comment", async (req, res) => {
         "INSERT INTO comments(user_uid,username,comment,video_id) VALUES($1,$2,$3,$4) RETURNING *",
         [userUID, username, comment, videoId],
       );
-      console.log(response);
+      console.log("163", response);
       res.status(200).json(response.rows[0]);
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   } finally {
     client.release();
   }
@@ -219,12 +207,15 @@ app.get("/comments/:videoId", async (req, res) => {
       "SELECT * from comments WHERE video_id=$1",
       [videoId],
     );
+    console.log("185", commentExist);
+
     if (!commentExist.rows.length) {
-      return res.status(404).json({ message: "No comment found" });
+      return res.status(404).json({ message: "No postgre comment found" });
+    } else {
+      return res.status(200).json(commentExist.rows);
     }
-    console.log(commentExist);
-    res.status(200).json(commentExist.rows);
   } catch (error) {
+    console.error("Error fetching comment", error);
     res.status(500).json(error);
   } finally {
     client.release();

@@ -39,7 +39,7 @@ export const getChannelIcon = createAsyncThunk(
           id: channelId
         }
       })
-      // console.log(items)
+      // console.log(items[0])
       return items[0]
     } catch (error) {
       return rejectWithValue(error.message)
@@ -56,19 +56,20 @@ export const getVideosByCategory = createAsyncThunk(
    */
   async (keyword, { getState,rejectWithValue }) => {
     try {
-      /*
-      get nextPageToken state from videos slice using getState() function
-      */
-      const { nextPageToken } = getState().videos
+     
       
       /*Endpoint: /search is used to search for
        YouTube videos.
-      */  
+      */
+      
+      const {nextPageToken}=getState().videos
       const res = await request('/search', {
         params: {
           part: 'snippet',
           maxResults: 20,
-          pageToken: nextPageToken,
+          //pageToken =current retrieving PageToken
+          //api will automatically return nextPageToken after fetching currentpage
+          pageToken:nextPageToken,
           /*The q parameter in the YouTube Data API is typically
            used as a search query parameter. It allows you to 
            specify a text string to search for videos, playlists,
@@ -89,7 +90,7 @@ export const getVideosByCategory = createAsyncThunk(
       const { data: videoData } = await request.get('/videos', {
         params: {
           part: 'snippet,contentDetails,statistics',
-          id: videoIds,//retrive specific video based on videoIds
+          id: videoIds,//retrieve all videos in videoIds
         }
       });
       console.log(videoData)
@@ -182,37 +183,42 @@ export const getRelatedVideo = createAsyncThunk(
   }
 )
 
-const getVideoBySearch = createAsyncThunk(
-  'searchVideos/getVideoBySearch',
-  async (query) => {
-    try {
-      const response = await request.get('/search',
-        {
-          /*
-          
-params: {
-          part: 'snippet',
-          maxResults: 20,
-          pageToken: nextPageToken,
-          The q parameter in the YouTube Data API is typically
-           used as a search query parameter. It allows you to 
-           specify a text string to search for videos, playlists,
-           or channels that match the query. 
-          q: keyword,
-          type:'video'
-        
 
-           */
-          const nextPageToken=
+
+export const getVideosBySearch = createAsyncThunk(
+  'searchVideos/getVideosBySearch',
+  async (keyword,{getState}) => {
+    try {
+      const{nextPageToken}=getState().searchVideo
+      const res = await request.get('/search',
+        {
           params: {
             part: 'snippet',
             maxResults: 25,
-            pageToken:nextPageToken,
-            q: query,
-            type:"video"
+            q: keyword,
+            type: "video",
+            pageToken:nextPageToken
+        }
+        })
+      console.log(res)
+
+      const videoIds = res.data.items.map(item => item.id.videoId).join(',')
+      
+      const { data: videoData } = await request.get('/videos', {
+        params: {
+          part: 'snippet,contentDetails,statistics',
+          id: videoIds,
+          category:keyword
         }
         
       })
+      console.log(videoData)
+console.log(videoData)
+      return {
+        videos: videoData,
+        nextPageToken: res.data.nextPageToken,
+        category:keyword
+      }
     } catch (error) {
       console.log(error)
     }
@@ -267,9 +273,15 @@ const videoSlice = createSlice({
     
       .addCase(getChannelIcon.fulfilled, (state, action) => {
         //store channel icon by id
+        //Dynamically add a key-value pair
         state.channelIcons[action.payload.id] = action.payload.snippet.thumbnails.default.url
         /*
           channelIcons[action.payload.id] ="UC123": { data: {...} },
+
+          channelIcons={
+          "UC123": { data: {...} },
+          ...
+          }
         */
       })
     
@@ -305,6 +317,7 @@ const selectedVideoSlice = createSlice({
   }
 })
 
+
 const relatedVideoSlice = createSlice({
   name: 'relatedVideo',
   initialState: {
@@ -321,7 +334,37 @@ const relatedVideoSlice = createSlice({
   
 })
 
+const searchVideoSlice = createSlice({
+  name: 'searchVideo',
+  initialState: {
+    searchedVideos: [],
+    channelIcons: {},
+    loading: true,
+    nextPageToken: null,
+    category:null
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getVideosBySearch.fulfilled, (state, action) => {
+        const { videos, nextPageToken,category } = action.payload
+      
+          state.searchedVideos = videos.items
+          state.category=category
+          state.nextPageToken = nextPageToken
+          state.loading=false
+      })
+    
+      .addCase(getChannelIcon.fulfilled, (state, action) => {
+        state.channelIcons[action.payload.id] = action.payload.snippet.thumbnails.default.url
+        //state.channelIcons[action.payload.id] = action.payload.snippet.thumbnails.default.url
 
+    })
+  }
+ 
+})
+
+
+export const searchVideoReducer=searchVideoSlice.reducer
 export const relatedVideoReducer=relatedVideoSlice.reducer
 export const selectedVideoReducer=selectedVideoSlice.reducer
 export default videoSlice.reducer

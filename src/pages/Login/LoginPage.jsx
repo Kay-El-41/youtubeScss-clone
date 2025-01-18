@@ -22,7 +22,7 @@ export default function LoginPage() {
   const { currentUser,token } = useContext(AuthContext)
   console.log(currentUser)
   console.log(token)
-  const API_URL=``
+  const API_URL=`https://39975667-344b-4e82-9b8c-67c09af543e0-00-1secia8f318w6.sisko.replit.dev`
   
   useEffect(() => {
     try {
@@ -69,7 +69,7 @@ export default function LoginPage() {
       const userFields = {
         profileImg: defaultProfilePicture,
         email: user.email,
-        username: defaultUsername,
+        username:defaultUsername,
         createdAt:new Date()
       }
 
@@ -81,24 +81,18 @@ export default function LoginPage() {
   const insertUserInPostgreUsers =async (user) => {
     const userUID = user.uid
     const userEmail=user.email
-    const userDocRef = doc(db, 'users', userUID)
-    const userDoc=await getDoc(userDocRef)
-    let userData;
-    if (userDoc.exists()) {
-      userData = userDoc.userData()
-    }
-
+   
+   
     try {
-      
-      const firebaseProfileImg = userData.profileImg
       
       const data = {
         userUID,
         email: userEmail,
-        firebaseProfileImg
       }
       const response=await axios.post(`${API_URL}/saveUser`,data)
       console.log(response.data)
+
+      
     } catch (error) {
       console.log(error)
     }

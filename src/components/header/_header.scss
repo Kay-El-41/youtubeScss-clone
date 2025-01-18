@@ -81,7 +81,21 @@
     display:flex;
     justify-content: space-around;
     align-items: center;
-  }
+
+    .profile__pic {
+        border-radius: 50%;
+        width: 35px;
+      }
+  }   
+}
+
+.modal {
+
+  width:40%;
+  height:30%;
+  z-index: 99999;
+  position: fixed;
+
 }
 
 

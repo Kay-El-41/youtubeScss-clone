@@ -28,8 +28,8 @@ export default function Sidebar({sidebar,handleToggleSidebar}) {
     <Nav className={sidebar ? "sidebar open" : "sidebar"}
     onClick={()=>handleToggleSidebar(false)}
     >
-      <li>
-        <MdHome size={23} />
+      <li onClick={ ()=>navigate("/") }>
+        <MdHome  size={23} />
         <span>Home</span>
       </li>
       <li>
