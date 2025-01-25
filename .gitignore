@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 .env
 config/serviceAccountKey.json
+youtube-clone API/scss-clone-firebase-adminsdk-arcfn-4ae11224c9.json
 
