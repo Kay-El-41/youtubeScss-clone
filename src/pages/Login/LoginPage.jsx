@@ -22,12 +22,12 @@ export default function LoginPage() {
   const { currentUser,token } = useContext(AuthContext)
   console.log(currentUser)
   console.log(token)
-  const API_URL=`https://39975667-344b-4e82-9b8c-67c09af543e0-00-1secia8f318w6.sisko.replit.dev`
+  const API_URL=`https://9f3a53d0-6f2d-4bd1-a909-f60c23bbdd52-00-idqqdijsxsxb.sisko.replit.dev`
   
   useEffect(() => {
     try {
 
-      if (currentUser) {
+      if (currentUser ) {
       
          /*
         The replace option comes from React Router's navigation API.
@@ -38,9 +38,11 @@ export default function LoginPage() {
         */
         navigate('/', { replace: true })
       }
-      else {
-       navigate('/login')
+       else{
+        navigate("/login")
+        return
       }
+
     } catch (error) {
       console.log(error)
     } 
@@ -115,7 +117,7 @@ export default function LoginPage() {
       await authenticateYouTube(false)
       await createUserInFirestoreDB(user)
       await insertUserInPostgreUsers(user)
-      
+      window.location.reload()
     }catch(error){
       console.log('Sign-up error',error)
     } 

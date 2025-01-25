@@ -84,7 +84,9 @@ export default function VideoComments({ videoId }) {
     const data = { comment: newComment, videoId, userUID }
     console.log(data)
     dispatch(postCommentByPostgreSQL(data))
-    setNewComment(null)
+      setNewComment(null)
+      setShowButton(false)
+      
     } catch (error) {
       console.error("post comment error:",error)
     } 

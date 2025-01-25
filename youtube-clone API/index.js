@@ -252,13 +252,20 @@ app.delete("/comment/:videoId/:commentId", async (req, res) => {
   const client = await pool.connect();
   const { videoId, commentId } = req.params;
   const { userUID } = req.body;
+  console.log("line 225", videoId, commentId, userUID);
   try {
+    if (!userUID || !videoId || !commentId) {
+      console.log({ message: "Missing required fields" });
+      return res.status(400).json({ message: "Missing required fields" });
+    }
     const deleteComment = await client.query(
-      "DELETE FROM comments WHERE video_id=$1 AND id=$2 AND user_uid=$3",
+      "DELETE FROM comments WHERE video_id=$1 AND id=$2 AND user_uid=$3 RETURNING *",
       [videoId, commentId, userUID],
     );
-    res.status(200).json("comment successfully deleted");
+    console.log("264", deleteComment);
+    res.status(200).json(deleteComment);
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   } finally {
     client.release();

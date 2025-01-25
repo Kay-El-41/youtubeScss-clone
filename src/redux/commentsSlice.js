@@ -3,7 +3,7 @@ import request from "../api";
 import axios from "axios";
 // import axios from "axios";
 
-const API_URL = `https://39975667-344b-4e82-9b8c-67c09af543e0-00-1secia8f318w6.sisko.replit.dev`
+const API_URL = `https://9f3a53d0-6f2d-4bd1-a909-f60c23bbdd52-00-idqqdijsxsxb.sisko.replit.dev`
 
 export const getCommentsByVideoIdYoutubeAPI = createAsyncThunk(
   'comments/getCommentsByVideoIdYoutubeAPI',

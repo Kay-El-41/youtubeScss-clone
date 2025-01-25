@@ -1,11 +1,11 @@
 import { Col, Container, Row, Spinner } from 'react-bootstrap'
-import CategoriesBar from '../components/categoriesBar/CategoriesBar'
-import Video from '../components/video/Video'
+import CategoriesBar from '../../components/categoriesBar/CategoriesBar'
+import Video from '../../components/video/Video'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPopularVideos, getVideosByCategory } from '../redux/videoSlice'
+import { getPopularVideos, getVideosByCategory } from '../../redux/videoSlice'
 import {   useEffect } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
+// import "./_homePage.scss"
 
 
 export default function HomePage() {
@@ -32,7 +32,7 @@ export default function HomePage() {
     }
   }
   return (
-    <Container>
+    <Container className='homePage__container'>
       <CategoriesBar />
       <InfiniteScroll
         dataLength={videos.length}
@@ -44,7 +44,7 @@ export default function HomePage() {
         >
          <Row>
         {!loading &&videos.map((video) => (
-          <Col key={video.id } lg={3} md={4} xs={6}>
+          <Col key={video.id} xl={3} lg={4} md={4} sm={6} xs={12}>
             <Video video={video}  />
           </Col>
         ))}
