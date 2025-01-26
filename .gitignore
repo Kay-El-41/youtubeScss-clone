@@ -24,4 +24,7 @@ dist-ssr
 *.sw?
 .env
 config/serviceAccountKey.json
-API FIREBASE
+# Firebase Admin SDK files - multiple patterns for safety
+*firebase-adminsdk*.json
+**/firebase-adminsdk*.json
+API\ FIREBASE/API\ FIREBASEADMIN/*.json
