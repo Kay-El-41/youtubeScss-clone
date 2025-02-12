@@ -1,17 +1,27 @@
 {
-  "version":2,
-  "builds":[
+  "version": 2,
+  "builds": [
     {
-      "src":"package.json",
-      "use":"@vercel/static-build",
-      "config":{"distDir":"dist"}
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     }
   ],
-
-  "routes":[
+  "headers": [
     {
-      "src":"/(.*)",
-      "dest":"/$1"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
     }
   ]
+  {
+
 }

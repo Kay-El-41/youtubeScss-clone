@@ -28,3 +28,5 @@ config/serviceAccountKey.json
 *firebase-adminsdk*.json
 **/firebase-adminsdk*.json
 API\ FIREBASE/API\ FIREBASEADMIN/*.json
+.vercel
+.env*.local

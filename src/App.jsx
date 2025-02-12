@@ -8,7 +8,7 @@ import HomePage from "./pages/Home/HomePage";
 import"./_app.scss"
 import LoginPage from "./pages/Login/LoginPage";
 import { BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {AuthProvider} from "./components/AuthProvider";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -18,7 +18,12 @@ import SearchPage from './pages/Search/SearchPage';
 export  function Layout() {
   const [sidebar, toggleSidebar] = useState(false)
   
-  const handleToggleSidebar = () => toggleSidebar((value)=>!value)
+  const handleToggleSidebar = () => toggleSidebar((value) => !value)
+  
+  useEffect(() => {
+    console.log("VITE_YOUTUBE_API_KEY:", import.meta.env.VITE_YOUTUBE_API_KEY);
+    console.log("VITE_GOOGLE_CLIENT_ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  }, []);
   return (
      <>
       <Header handleToggleSidebar={handleToggleSidebar} />
