@@ -1,4 +1,3 @@
-
 .watchPage__container {
   min-width: 345px;
   max-width: 100%;
@@ -10,14 +9,16 @@
   margin: 0 auto;
   padding: 1rem;
 }
-.watchPage__player{
-height:60vh;
-background-color: #353946;
-width:100%;
-margin-bottom: 2rem;
-box-sizing: border-box;
 
-iframe{
+.watchPage__player {
+  height: 60vh;
+  background-color: #353946;
+  width: 100%;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+}
+.watchPage__player iframe {
   border-radius: 5px;
 }
-}
+
+/*# sourceMappingURL=_watchPage.css.map */
