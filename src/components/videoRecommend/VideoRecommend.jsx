@@ -123,7 +123,7 @@
 // }
 
 import { Col, Row } from 'react-bootstrap';
-import './_videoRecommend.scss';
+import './_videoRecommend.';
 import moment from 'moment';
 import numeral from 'numeral';
 import { useNavigate } from 'react-router-dom';
