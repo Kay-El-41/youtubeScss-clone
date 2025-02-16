@@ -1,6 +1,6 @@
 import { Col, Row, Spinner } from "react-bootstrap";
 import VideoMetaData from "../../components/videoMetaData/VideoMetaData";
-import"./_watchPage.scss"
+import"./_watchPage.css"
 import VideoComments from "../../components/videoComments/VideoComments";
 import VideoRecommend from "../../components/videoRecommend/VideoRecommend";
 import { useParams } from "react-router-dom";

@@ -1,5 +1,5 @@
 import { Nav } from 'react-bootstrap'
-import './_sidebar.scss'
+import './_sidebar.css'
 import {
   MdSubscriptions,
   // MdHistory,

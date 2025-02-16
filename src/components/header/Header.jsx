@@ -1,5 +1,5 @@
 import { FaBars } from 'react-icons/fa'
-import './_header.scss'
+import './_header.css'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { MdApps, MdNotifications } from 'react-icons/md'
 import { useContext, useEffect, useState } from 'react';

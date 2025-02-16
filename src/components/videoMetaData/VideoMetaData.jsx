@@ -1,5 +1,5 @@
 import moment from "moment"
-import"./_videoMetaData.scss"
+import"./_videoMetaData.css"
 import numeral from "numeral"
 import {  MdShare, MdThumbDown, MdThumbUp } from "react-icons/md"
 import ReactShowMoreText from "react-show-more-text"

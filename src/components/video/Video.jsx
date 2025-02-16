@@ -1,5 +1,5 @@
 import moment from 'moment';
-import './_video.scss'
+import './_video.css'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChannelIcon } from '../../redux/videoSlice';

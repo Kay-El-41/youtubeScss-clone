@@ -1,5 +1,5 @@
 import moment from "moment";
-import"./_comment.scss"
+import"./_comment.css"
 import { useContext, useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";

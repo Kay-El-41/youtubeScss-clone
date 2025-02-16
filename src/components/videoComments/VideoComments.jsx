@@ -1,4 +1,4 @@
-import './_videoComments.scss'
+import './_videoComments.css'
 import Comment from '../comment/Comment'
 import { useDispatch, useSelector } from 'react-redux'
 import { useContext, useEffect, useRef, useState } from 'react'

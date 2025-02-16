@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './_categoriesBar.scss'
+import './_categoriesBar.css'
 import { useDispatch } from 'react-redux'
 import { getPopularVideos, getVideosByCategory } from '../../redux/videoSlice'
 

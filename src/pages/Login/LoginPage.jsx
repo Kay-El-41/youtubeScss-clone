@@ -1,7 +1,7 @@
 
 import {  useContext, useEffect, useState } from 'react'
 import { Button, Form, FormGroup } from 'react-bootstrap'
-import './_loginPage.scss'
+import './_loginPage.css'
 // import { useDispatch, useSelector } from 'react-redux'
 // import { login, signUp } from '../../redux/login/authSlice'
 import { auth, db } from '../../firebase'

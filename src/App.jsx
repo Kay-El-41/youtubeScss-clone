@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import Header from "./components/header/Header";
 import Sidebar from "./components/sidebar/Sidebar";
 import HomePage from "./pages/Home/HomePage";
-import"./_app.scss"
+import"./_app.css"
 import LoginPage from "./pages/Login/LoginPage";
 import { BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import { useEffect, useState } from "react";
